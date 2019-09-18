@@ -13,7 +13,7 @@ const SOURCE_REPO_NAME = process.env["SOURCE_REPO_NAME"];
 
 const TARGET_GH_TOKEN = process.env["TARGET_GH_TOKEN"];
 const TARGET_REPO_URL = process.env["TARGET_REPO_URL"];
-const TARGET_API_URL = process.env["SOURCE_API_URL"];
+const TARGET_API_URL = process.env["TARGET_API_URL"];
 const TARGET_REPO_OWNER = process.env["TARGET_REPO_OWNER"];
 const TARGET_REPO_NAME = process.env["TARGET_REPO_NAME"];
 
