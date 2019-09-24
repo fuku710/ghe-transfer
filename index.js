@@ -35,12 +35,12 @@ const TARGET_REPO_ORGANIZATION = process.env["TARGET_REPO_ORGANIZATION"];
     TARGET_REPO_ORGANIZATION
   );
   const desc = await sourceRepo.getRepositoryDescription();
-  // await targetRepo.createRemoteRepository(desc);
+  await targetRepo.createRemoteRepository(desc);
   transferRepository(SOURCE_REPO_URL, TARGET_REPO_URL);
   const issues = await sourceRepo.getIssues();
   console.log(issues);
-  // await targetRepo.setIssues(issues);
+  await targetRepo.setIssues(issues);
   const hooks = await sourceRepo.getHooks();
   console.log(hooks);
-  // await targetRepo.setHooks(hooks);
+  await targetRepo.setHooks(hooks);
 })();
