@@ -22,12 +22,14 @@ SOURCE_REPO_URL   # 移行元のリポジトリのURL
 SOURCE_API_URL    # 移行元のGitHubAPIのURL(ex.https://api.github.com)
 SOURCE_REPO_OWNER # 移行元のリポジトリのオーナー
 SOURCE_REPO_NAME  # 移行元のリポジトリの名前
+SOURCE_REPO_ORGANIZATION # 移行元リポジトリの組織名
 
 TARGET_GH_TOKEN   # 移行先のユーザのGitHubのアクセストークン
 TARGET_REPO_URL   # 移行先のリポジトリのURL
 TARGET_API_URL    # 移行先のリポジトリのオーナー
 TARGET_REPO_OWNER # 移行先のリポジトリのオーナー
 TARGET_REPO_NAME  # 移行先のリポジトリの名前
+TARGET_REPO_ORGANIZATION # 移行元リポジトリの組織名
 ```
 
 ```
