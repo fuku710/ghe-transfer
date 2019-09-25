@@ -35,7 +35,7 @@ dotenv.config();
     {
       type: "confirm",
       name: "sourceIsOrganization",
-      message: "Repository owner is organization?(Source)",
+      message: "Is repository owner organization?(Source)",
       default: process.env["SOURCE_IS_ORGANIZATION"] === "true"
     },
     {
@@ -93,7 +93,7 @@ dotenv.config();
     {
       type: "confirm",
       name: "targetIsOrganization",
-      message: "Repository owner is organization?(Target)"",
+      message: "Is repository owner organization?(Target)"",
       default: process.env["TARGET_IS_ORGANIZATION"] === "true"
     },
     {
