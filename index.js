@@ -35,13 +35,13 @@ dotenv.config();
     {
       type: "confirm",
       name: "sourceIsOrganization",
-      message: "Repository owner is organization?",
+      message: "Repository owner is organization?(Source)",
       default: process.env["SOURCE_IS_ORGANIZATION"] === "true"
     },
     {
       type: "list",
       name: "sourceCloneType",
-      message: "How do clone?",
+      message: "How do clone?(Source)",
       choices: ["https", "ssh"],
       default: process.env["SOURCE_CLONE_TYPE"]
     }
@@ -93,13 +93,13 @@ dotenv.config();
     {
       type: "confirm",
       name: "targetIsOrganization",
-      message: "Repository owner is organization?",
+      message: "Repository owner is organization?(Target)"",
       default: process.env["TARGET_IS_ORGANIZATION"] === "true"
     },
     {
       type: "list",
       name: "targetCloneType",
-      message: "How do clone?",
+      message: "How do clone?(Target)",
       choices: ["https", "ssh"],
       default: process.env["TARGET_CLONE_TYPE"]
     }
@@ -122,9 +122,6 @@ dotenv.config();
     targetCloneType === "https"
       ? `https://${targetDomain}/${targetRepoOwner}/${targetRepoName}.git`
       : `git@${targetDomain}:${targetRepoOwner}/${targetRepoName}.git`;
-
-  console.log(sourceAnswers, sourceApiUrl, sourceRepoUrl);
-  console.log(targetAnswers, targetApiUrl, targetRepoUrl);
 
   const sourceRepo = new Repository(
     sourceRepoName,
