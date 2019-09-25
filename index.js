@@ -93,7 +93,7 @@ dotenv.config();
     {
       type: "confirm",
       name: "targetIsOrganization",
-      message: "Is repository owner organization?(Target)"",
+      message: "Is repository owner organization?(Target)",
       default: process.env["TARGET_IS_ORGANIZATION"] === "true"
     },
     {
@@ -141,9 +141,9 @@ dotenv.config();
   await targetRepo.createRemoteRepository(desc);
   transferRepository(sourceRepoUrl, targetRepoUrl);
   const issues = await sourceRepo.getIssues();
-  console.log(issues);
+  console.log(`${issues.length} issues`);
   await targetRepo.setIssues(issues);
   const hooks = await sourceRepo.getHooks();
-  console.log(hooks);
+  console.log(`${hooks.length} hooks`);
   await targetRepo.setHooks(hooks);
 })();
