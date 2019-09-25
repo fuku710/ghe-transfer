@@ -35,6 +35,7 @@ TARGET_DOMAIN          # 移行先のリポジトリのドメイン 例)github.c
 TARGET_REPO_NAME       # 移行先のリポジトリの名前
 TARGET_REPO_OWNER      # 移行先のリポジトリのオーナー
 TARGET_IS_ORGANIZATION # 移行先のリポジトリのオーナーが組織かどうか
+TARGET_CLONE_TYPE      # 移行先のリポジトリをプッシュするときの種類(https,ssh)
 ```
 
 ## 注意事項
