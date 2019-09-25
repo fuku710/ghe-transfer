@@ -1,42 +1,148 @@
 const dotenv = require("dotenv");
+const inquirer = require("inquirer");
 
 const Repository = require("./lib/repository");
 const transferRepository = require("./lib/utils").transferRepository;
 
 dotenv.config();
 
-const SOURCE_GH_TOKEN = process.env["SOURCE_GH_TOKEN"];
-const SOURCE_REPO_URL = process.env["SOURCE_REPO_URL"];
-const SOURCE_API_URL = process.env["SOURCE_API_URL"];
-const SOURCE_REPO_OWNER = process.env["SOURCE_REPO_OWNER"];
-const SOURCE_REPO_NAME = process.env["SOURCE_REPO_NAME"];
-const SOURCE_REPO_ORGANIZATION = process.env["SOURCE_REPO_ORGANIZATION"];
-
-const TARGET_GH_TOKEN = process.env["TARGET_GH_TOKEN"];
-const TARGET_REPO_URL = process.env["TARGET_REPO_URL"];
-const TARGET_API_URL = process.env["TARGET_API_URL"];
-const TARGET_REPO_OWNER = process.env["TARGET_REPO_OWNER"];
-const TARGET_REPO_NAME = process.env["TARGET_REPO_NAME"];
-const TARGET_REPO_ORGANIZATION = process.env["TARGET_REPO_ORGANIZATION"];
-
 (async () => {
+  const sourceQuestions = [
+    {
+      type: "input",
+      name: "sourceGhToken",
+      message: "GitHub Personal Access Token(Source)",
+      default: process.env["SOURCE_GH_TOKEN"]
+    },
+    {
+      type: "input",
+      name: "sourceDomain",
+      message: "GitHub Domain(Source)",
+      default: process.env["SOURCE_DOMAIN"] || "github.com"
+    },
+    {
+      type: "input",
+      name: "sourceRepoName",
+      message: "Repository Name(Source)",
+      default: process.env["SOURCE_REPO_NAME"]
+    },
+    {
+      type: "input",
+      name: "sourceRepoOwner",
+      message: "Repositry Owner(Source)",
+      default: process.env["SOURCE_REPO_OWNER"]
+    },
+    {
+      type: "confirm",
+      name: "sourceIsOrganization",
+      message: "Repository owner is organization?",
+      default: process.env["SOURCE_IS_ORGANIZATION"] === "true"
+    },
+    {
+      type: "list",
+      name: "sourceCloneType",
+      message: "How do clone?",
+      choices: ["https", "ssh"],
+      default: process.env["SOURCE_CLONE_TYPE"]
+    }
+  ];
+
+  const sourceAnswers = await inquirer.prompt(sourceQuestions);
+  const {
+    sourceGhToken,
+    sourceDomain,
+    sourceRepoName,
+    sourceRepoOwner,
+    sourceIsOrganization,
+    sourceCloneType
+  } = sourceAnswers;
+  const sourceApiUrl =
+    sourceDomain === "github.com"
+      ? "https//api.github.com"
+      : `https://${sourceDomain}/api/v3`;
+  const sourceRepoUrl =
+    sourceCloneType === "https"
+      ? `https://${sourceDomain}/${sourceRepoOwner}/${sourceRepoName}.git`
+      : `git@${sourceDomain}:${sourceRepoOwner}/${sourceRepoName}.git`;
+
+  const targetQuestions = [
+    {
+      type: "input",
+      name: "targetGhToken",
+      message: "GitHub Personal Access Token(Target)",
+      default: process.env["TARGET_GH_TOKEN"]
+    },
+    {
+      type: "input",
+      name: "targetDomain",
+      message: "GitHub Domain(Target)",
+      default: process.env["TARGET_DOMAIN"] || "github.com"
+    },
+    {
+      type: "input",
+      name: "targetRepoName",
+      message: "Repository Name(Target)",
+      default: process.env["TARGET_REPO_NAME"] || sourceRepoName
+    },
+    {
+      type: "input",
+      name: "targetRepoOwner",
+      message: "Repositry Owner(Target)",
+      default: process.env["TARGET_REPO_OWNER"]
+    },
+    {
+      type: "confirm",
+      name: "targetIsOrganization",
+      message: "Repository owner is organization?",
+      default: process.env["TARGET_IS_ORGANIZATION"] === "true"
+    },
+    {
+      type: "list",
+      name: "targetCloneType",
+      message: "How do clone?",
+      choices: ["https", "ssh"],
+      default: process.env["TARGET_CLONE_TYPE"]
+    }
+  ];
+
+  const targetAnswers = await inquirer.prompt(targetQuestions);
+  const {
+    targetGhToken,
+    targetDomain,
+    targetRepoName,
+    targetRepoOwner,
+    targetIsOrganization,
+    targetCloneType
+  } = targetAnswers;
+  const targetApiUrl =
+    targetDomain === "github.com"
+      ? "https://api.github.com"
+      : `https://${targetDomain}/api/v3`;
+  const targetRepoUrl =
+    targetCloneType === "https"
+      ? `https://${targetDomain}/${targetRepoOwner}/${targetRepoName}.git`
+      : `git@${targetDomain}:${targetRepoOwner}/${targetRepoName}.git`;
+
+  console.log(sourceAnswers, sourceApiUrl, sourceRepoUrl);
+  console.log(targetAnswers, targetApiUrl, targetRepoUrl);
+
   const sourceRepo = new Repository(
-    SOURCE_REPO_NAME,
-    SOURCE_REPO_OWNER,
-    SOURCE_API_URL,
-    SOURCE_GH_TOKEN,
-    SOURCE_REPO_ORGANIZATION
+    sourceRepoName,
+    sourceRepoOwner,
+    sourceApiUrl,
+    sourceGhToken,
+    sourceIsOrganization
   );
   const targetRepo = new Repository(
-    TARGET_REPO_NAME,
-    TARGET_REPO_OWNER,
-    TARGET_API_URL,
-    TARGET_GH_TOKEN,
-    TARGET_REPO_ORGANIZATION
+    targetRepoName,
+    targetRepoOwner,
+    targetApiUrl,
+    targetGhToken,
+    targetIsOrganization
   );
   const desc = await sourceRepo.getRepositoryDescription();
   await targetRepo.createRemoteRepository(desc);
-  transferRepository(SOURCE_REPO_URL, TARGET_REPO_URL);
+  transferRepository(sourceRepoUrl, targetRepoUrl);
   const issues = await sourceRepo.getIssues();
   console.log(issues);
   await targetRepo.setIssues(issues);
