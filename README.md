@@ -19,6 +19,15 @@ GitHubEnterprise の Server から Cloud に移行するためのツールです
 
 ## 使い方
 
+### アクセストークンの発行
+
+移行元、移行先両方でアクセストークンを発行してください  
+Settings > Developer settings > Personal access tokens > Generate new token  
+Note:任意の名前
+Select scopes:repo と admin:repo_hook にチェック
+
+### ツールの実行
+
 ```
 # パッケージのインストール
 npm install
