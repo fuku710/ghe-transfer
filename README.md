@@ -23,17 +23,20 @@ GitHubEnterprise の Server から Cloud に移行するためのツールです
 
 移行元、移行先両方でアクセストークンを発行してください  
 Settings > Developer settings > Personal access tokens > Generate new token  
-Note:任意の名前
+Note:任意の名前  
 Select scopes:repo と admin:repo_hook にチェック
 
 ### ツールの実行
 
-```
-# パッケージのインストール
-npm install
-# 実行
-npm run exec
-```
+1. リポジトリのクローン  
+   `$ git clone https://github.com/fuku710/ghe-transfer.git`
+   `$ cd ghe-transfer`
+2. パッケージのインストール  
+   `$ npm install`
+3. 実行  
+   `$ npm run exec`
+
+## 環境変数
 
 .env で環境変数を設定するとデフォルト値として設定されます
 
