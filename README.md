@@ -85,3 +85,9 @@ Wiki の移行はツールからできないので手動で行ってください
    `git remote add target https://github.com/<オーナー>/<移行先リポジトリ>.wiki.git`
 5. 移行先のリモートリポジトリにプッシュ  
    `git push target --mirror`
+   
+## LICENSE
+MIT
+
+## Author
+NIFTY NeXus Co., Ltd.
