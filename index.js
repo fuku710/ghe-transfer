@@ -137,13 +137,17 @@ dotenv.config();
     targetGhToken,
     targetIsOrganization
   );
-  const desc = await sourceRepo.getRepositoryDescription();
-  await targetRepo.createRemoteRepository(desc);
-  transferRepository(sourceRepoUrl, targetRepoUrl);
-  const issues = await sourceRepo.getIssues();
-  console.log(`${issues.length} issues`);
-  await targetRepo.setIssues(issues);
-  const hooks = await sourceRepo.getHooks();
-  console.log(`${hooks.length} hooks`);
-  await targetRepo.setHooks(hooks);
+  try {
+    const desc = await sourceRepo.getRepositoryDescription();
+    await targetRepo.createRemoteRepository(desc);
+    transferRepository(sourceRepoUrl, targetRepoUrl);
+    const issues = await sourceRepo.getIssues();
+    console.log(`${issues.length} issues`);
+    await targetRepo.setIssues(issues);
+    const hooks = await sourceRepo.getHooks();
+    console.log(`${hooks.length} hooks`);
+    await targetRepo.setHooks(hooks);
+  } catch (e) {
+    console.log(`${e.name}:${e.message}`);
+  }
 })();
