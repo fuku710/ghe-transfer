@@ -123,27 +123,49 @@ dotenv.config();
       ? `https://${targetDomain}/${targetRepoOwner}/${targetRepoName}.git`
       : `git@${targetDomain}:${targetRepoOwner}/${targetRepoName}.git`;
 
+  const proxyQuestions = [
+    {
+      type: "confirm",
+      name: "useProxy",
+      message: "Use proxy?",
+      default: process.env["USE_PROXY"] === "true"
+    },
+    {
+      type: "input",
+      name: "proxyUrl",
+      message: "Proxy URL",
+      default: process.env["PROXY_URL"]
+    }
+  ];
+  const proxyAnswers = await inquirer.prompt(proxyQuestions);
+
   const sourceRepo = new Repository(
     sourceRepoName,
     sourceRepoOwner,
     sourceApiUrl,
     sourceGhToken,
-    sourceIsOrganization
+    sourceIsOrganization,
+    proxyAnswers
   );
   const targetRepo = new Repository(
     targetRepoName,
     targetRepoOwner,
     targetApiUrl,
     targetGhToken,
-    targetIsOrganization
+    targetIsOrganization,
+    proxyAnswers
   );
-  const desc = await sourceRepo.getRepositoryDescription();
-  await targetRepo.createRemoteRepository(desc);
-  transferRepository(sourceRepoUrl, targetRepoUrl);
-  const issues = await sourceRepo.getIssues();
-  console.log(`${issues.length} issues`);
-  await targetRepo.setIssues(issues);
-  const hooks = await sourceRepo.getHooks();
-  console.log(`${hooks.length} hooks`);
-  await targetRepo.setHooks(hooks);
+  try {
+    const desc = await sourceRepo.getRepositoryDescription();
+    await targetRepo.createRemoteRepository(desc);
+    transferRepository(sourceRepoUrl, targetRepoUrl);
+    const issues = await sourceRepo.getIssues();
+    console.log(`${issues.length} issues`);
+    await targetRepo.setIssues(issues);
+    const hooks = await sourceRepo.getHooks();
+    console.log(`${hooks.length} hooks`);
+    await targetRepo.setHooks(hooks);
+  } catch (e) {
+    console.log(`${e.name}:${e.message}`);
+  }
 })();
