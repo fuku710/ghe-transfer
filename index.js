@@ -128,7 +128,7 @@ dotenv.config();
       type: "confirm",
       name: "useProxy",
       message: "Use proxy?",
-      default: process.env["USE_PROXY"] === true
+      default: process.env["USE_PROXY"] === "true"
     },
     {
       type: "input",
