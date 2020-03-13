@@ -66,6 +66,9 @@ TARGET_REPO_OWNER=nifty-nexus
 TARGET_IS_ORGANIZATION=true
 # 移行先のリポジトリをプッシュするときの種類(https,ssh)
 TARGET_CLONE_TYPE=https
+
+USE_PROXY=true
+PROXY_URL=http://proxy:80
 ```
 
 ## 注意事項

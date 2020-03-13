@@ -123,19 +123,37 @@ dotenv.config();
       ? `https://${targetDomain}/${targetRepoOwner}/${targetRepoName}.git`
       : `git@${targetDomain}:${targetRepoOwner}/${targetRepoName}.git`;
 
+  const proxyQuestions = [
+    {
+      type: "confirm",
+      name: "useProxy",
+      message: "Use proxy?",
+      default: process.env["USE_PROXY"] === true
+    },
+    {
+      type: "input",
+      name: "proxyUrl",
+      message: "Proxy URL",
+      default: process.env["PROXY_URL"]
+    }
+  ];
+  const proxyAnswers = await inquirer.prompt(proxyQuestions);
+
   const sourceRepo = new Repository(
     sourceRepoName,
     sourceRepoOwner,
     sourceApiUrl,
     sourceGhToken,
-    sourceIsOrganization
+    sourceIsOrganization,
+    proxyAnswers
   );
   const targetRepo = new Repository(
     targetRepoName,
     targetRepoOwner,
     targetApiUrl,
     targetGhToken,
-    targetIsOrganization
+    targetIsOrganization,
+    proxyAnswers
   );
   try {
     const desc = await sourceRepo.getRepositoryDescription();
