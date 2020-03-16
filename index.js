@@ -158,13 +158,17 @@ dotenv.config();
   try {
     const desc = await sourceRepo.getRepositoryDescription();
     await targetRepo.createRemoteRepository(desc);
-    transferRepository(sourceRepoUrl, targetRepoUrl);
+
     const issues = await sourceRepo.getIssues();
-    console.log(`${issues.length} issues`);
-    await targetRepo.setIssues(issues);
+    await targetRepo.createIssues(issues);
+
+    transferRepository(sourceRepoUrl, targetRepoUrl);
+
+    await targetRepo.changeIssuesToPullRequests(issues);
+    await targetRepo.closeIssuesAndPullRequests(issues);
+
     const hooks = await sourceRepo.getHooks();
-    console.log(`${hooks.length} hooks`);
-    await targetRepo.setHooks(hooks);
+    await targetRepo.createHooks(hooks);
   } catch (e) {
     console.log(`${e.name}:${e.message}`);
   }
