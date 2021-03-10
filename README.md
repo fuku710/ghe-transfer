@@ -93,4 +93,4 @@ Wiki の移行はツールからできないので手動で行ってください
 MIT
 
 ## Author
-NIFTY NeXus Co., Ltd.
+Naoto Fukuda
