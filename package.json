@@ -10,7 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "dotenv": "^8.1.0",
-    "got": "^10.6.0",
+    "got": "^11.8.5",
     "inquirer": "^7.0.0",
     "parse-link-header": "^1.0.1",
     "tunnel": "0.0.6"
